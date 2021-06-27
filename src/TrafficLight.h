@@ -43,12 +43,13 @@ class TrafficLight : public TrafficObject
 {
 public:
     // constructor / desctructor
+    TrafficLight();
 
     // getters / setters
-
-    // typical behaviour methods
     void waitForGreen();
     void simulate();
+
+    // typical behaviour methods
     TrafficLightPhase getCurrentPhase();
 
 private:
