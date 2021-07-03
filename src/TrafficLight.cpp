@@ -46,7 +46,6 @@ void TrafficLight::waitForGreen()
     // Once it receives TrafficLightPhase::green, the method returns.
     while (true)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         if (this->_MessageQueue->receive() == TrafficLightPhase::green)
         {
             return;
@@ -74,16 +73,16 @@ void TrafficLight::cycleThroughPhases()
     // Also, the while-loop should use std::this_thread::sleep_for to wait 1ms between two cycles.
 
     // init random duration
-    std::random_device dvc;
-    std::mt19937 eng(dvc());
-    std::uniform_int_distribution<> distr(4, 6);
+    static std::random_device dvc;
+    static std::mt19937 eng(dvc());
+    static std::uniform_int_distribution<> distr(4, 6);
 
     std::unique_lock<std::mutex> uLock(this->_mutex);
     std::cout << "TrafficLight #" << _id << "::cycleThroughPhase: thread id = " << std::this_thread::get_id() << std::endl;
     uLock.unlock();
 
     // init variables
-    int cycleDuration = distr(eng); // duration of a single simulation cycle in second, is radomly chosen
+    double cycleDuration = distr(eng); // duration of a single simulation cycle in second, is radomly chosen
     std::chrono::time_point<std::chrono::system_clock> lastUpdate;
 
     // init stop watch
