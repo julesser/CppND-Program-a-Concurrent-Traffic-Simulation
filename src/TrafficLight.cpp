@@ -27,6 +27,7 @@ void MessageQueue<T>::send(T &&msg)
     // as well as _condition.notify_one() to add a new message to the queue and afterwards send a notification.
 
     std::unique_lock<std::mutex> uLock(this->_mutex);
+    _queue.clear();
     this->_queue.emplace_back(std::move(msg));
     this->_cond.notify_one();
 }
@@ -87,11 +88,10 @@ void TrafficLight::cycleThroughPhases()
 
     // init stop watch
     lastUpdate = std::chrono::system_clock::now();
+    // compute time difference to stop watch
+    long timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - lastUpdate).count();
     while (true)
     {
-        // compute time difference to stop watch
-        long timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - lastUpdate).count();
-
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         if (timeSinceLastUpdate >= cycleDuration)
