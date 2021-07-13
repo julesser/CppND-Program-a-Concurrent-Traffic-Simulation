@@ -88,10 +88,11 @@ void TrafficLight::cycleThroughPhases()
 
     // init stop watch
     lastUpdate = std::chrono::system_clock::now();
-    // compute time difference to stop watch
-    long timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - lastUpdate).count();
+    long timeSinceLastUpdate;
     while (true)
     {
+        // compute time difference to stop watch
+        long timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - lastUpdate).count();
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         if (timeSinceLastUpdate >= cycleDuration)
